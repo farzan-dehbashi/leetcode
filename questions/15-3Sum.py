@@ -1,22 +1,21 @@
-def threeSum(self, nums: List[int]) -> List[List[int]]:
-        sorted_nums = sorted(nums)
-        i_dict = dict()
-        res_nums = list()
-        for i, num in enumerate(nums):
-            if not num in i_dict.keys():
-                i_dict[num] = i
-        sorted_nums = list(set(sorted_nums))
-        for i, num in enumerate(sorted_nums):
-            j = i + 1
-            k = len(sorted_nums) - 1
-            while j < k:
-                if sorted_nums[i] + sorted_nums[j] + sorted_nums[k] == 0:
-                    res_nums = res_nums + [i_dict[sorted_nums[i]], i_dict[sorted_nums[j]], i_dict[sorted_nums[k]]]
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        res = list()
+        nums.sort()
+        for i, a in enumerate(nums):
+            if i > 0 and nums[i - 1] == a:
+                continue
 
-                elif sorted_nums[j] + sorted_nums[k] > -1 * sorted_nums[i]:
-                    k -= 1
+            l, r = i + 1, len(nums) - 1
+            while r > l:
+                threeSum = nums[l] + nums[r] + a
+                if threeSum > 0:
+                    r -= 1
+                elif threeSum < 0:
+                    l += 1
                 else:
-                    j += 1
-        return res_nums
-
-
+                    res.append([a, nums[l], nums[r]])
+                    l += 1
+                    while l<r and l>0 and nums[l - 1] == nums[l]:
+                        l += 1
+        return res
